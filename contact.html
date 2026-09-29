@@ -41,8 +41,24 @@
     <div class="nav-right">
       <a href="index.html#explore" class="nav-secondary">Explore</a>
       <a href="contact.html" class="nav-primary">Contact</a>
+
+      <button class="mobile-menu-button" aria-label="Open menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
 
+  </div>
+
+  <div class="mobile-menu">
+    <a href="yoga.html">Yoga</a>
+    <a href="breathwork.html">Breath</a>
+    <a href="meditation.html">Meditation</a>
+    <a href="sound.html">Sound</a>
+    <a href="journal.html">Journal</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
   </div>
 </header>
 
@@ -133,11 +149,10 @@
 
       <div class="contact-form-card">
 
-     <input
-  type="hidden"
-  name="_next"
-  value="https://yyogaa-website.vercel.app/thank-you.html"
->
+        <form
+          action="https://formspree.io/f/mgavdlkl"
+          method="POST"
+        >
 
           <div class="form-group">
 
@@ -184,29 +199,12 @@
               name="interest"
             >
 
-              <option value="Yoga">
-                Yoga
-              </option>
-
-              <option value="Breathwork">
-                Breathwork
-              </option>
-
-              <option value="Meditation">
-                Meditation
-              </option>
-
-              <option value="Sound">
-                Sound
-              </option>
-
-              <option value="Collaboration">
-                Collaboration
-              </option>
-
-              <option value="Other">
-                Something else
-              </option>
+              <option value="Yoga">Yoga</option>
+              <option value="Breathwork">Breathwork</option>
+              <option value="Meditation">Meditation</option>
+              <option value="Sound">Sound</option>
+              <option value="Collaboration">Collaboration</option>
+              <option value="Other">Something else</option>
 
             </select>
 
@@ -394,5 +392,6 @@
 </footer>
 
 <script src="script.js"></script>
+
 </body>
 </html>
