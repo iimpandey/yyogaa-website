@@ -1166,3 +1166,78 @@ footer {
     url("https://images.unsplash.com/photo-1529693662653-9d480530a697?auto=format&fit=crop&w=1800&q=90")
     center / cover;
 }
+/* =========================
+   JOURNAL PAGE
+   ========================= */
+
+.journal-page-hero {
+  padding: 120px 0 90px;
+  background: var(--charcoal);
+  color: white;
+}
+
+.journal-page-hero h1 {
+  max-width: 800px;
+  margin-top: 18px;
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  line-height: .88;
+}
+
+.journal-page-hero h1 span {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+.journal-page-hero > .page-width > p:last-child {
+  max-width: 600px;
+  margin-top: 28px;
+  color: rgba(255,255,255,.7);
+  font-size: 1.05rem;
+}
+
+.journal-feature {
+  background: var(--cream);
+}
+
+.journal-feature-grid {
+  display: grid;
+  grid-template-columns: 58% 42%;
+  gap: 45px;
+  align-items: center;
+}
+
+.journal-feature-grid img {
+  height: 460px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+.journal-feature-grid h2 {
+  margin-top: 14px;
+  font-size: clamp(2.7rem, 5vw, 4.5rem);
+  line-height: 1;
+}
+
+.journal-feature-grid > div > p:not(.section-kicker) {
+  margin: 22px 0 28px;
+  color: var(--text-soft);
+  font-size: 1rem;
+}
+
+.journal-list-section {
+  background: #f8f5ee;
+}
+
+@media (max-width: 850px) {
+
+  .journal-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .journal-feature-grid img {
+    height: 350px;
+  }
+
+}
