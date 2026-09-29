@@ -1241,3 +1241,98 @@ footer {
   }
 
 }
+/* =========================
+   ABOUT PAGE
+   ========================= */
+
+.about-hero {
+  padding: 90px 0;
+  background: var(--charcoal);
+  color: white;
+}
+
+.about-hero-grid {
+  min-height: 600px;
+  display: grid;
+  grid-template-columns: 44% 56%;
+  gap: 60px;
+  align-items: center;
+}
+
+.about-hero h1 {
+  margin-top: 18px;
+  font-size: clamp(4rem, 7vw, 7rem);
+  line-height: .9;
+}
+
+.about-hero h1 span {
+  display: block;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.about-hero-grid > div:first-child > p:last-child {
+  margin-top: 26px;
+  max-width: 500px;
+  color: rgba(255,255,255,.72);
+  font-size: 1.05rem;
+}
+
+.about-hero-image img {
+  height: 560px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.about-story {
+  background: var(--cream);
+}
+
+.about-story-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 90px;
+}
+
+.about-story h2 {
+  margin-top: 14px;
+  font-size: clamp(2.8rem, 5vw, 4.7rem);
+  line-height: 1;
+}
+
+.about-story-grid > div:last-child p {
+  color: var(--text-soft);
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+
+.about-story-grid > div:last-child p + p {
+  margin-top: 20px;
+}
+
+.about-values {
+  background: #d8cfbc;
+}
+
+.about-pillars {
+  background: #f8f5ee;
+}
+
+@media (max-width: 850px) {
+
+  .about-hero-grid,
+  .about-story-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-hero-image img {
+    height: 400px;
+  }
+
+  .about-story-grid {
+    gap: 35px;
+  }
+
+}
