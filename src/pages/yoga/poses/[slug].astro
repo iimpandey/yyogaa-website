@@ -70,12 +70,14 @@ const { Content } = await render(pose);
 const sanskritDisplay = d.sanskrit?.iast ?? d.sanskrit?.simple;
 // Plain spelling is shown under "Also known as" when the IAST spelling is displayed,
 // so people (and search) can find it without accent marks.
+// (Skipped when the English name is already the plain Sanskrit, e.g. "Savasana".)
+const sanskritIsName = d.sanskrit?.simple === d.name;
 const alsoKnownAs = [
   ...d.alsoKnownAs,
-  ...(d.sanskrit?.iast && d.sanskrit.simple !== d.sanskrit.iast ? [d.sanskrit.simple] : []),
+  ...(d.sanskrit?.iast && d.sanskrit.simple !== d.sanskrit.iast && !sanskritIsName ? [d.sanskrit.simple] : []),
 ];
 
-const title = `${d.name}${d.sanskrit ? ` (${d.sanskrit.simple})` : ''}: How to Practice — Yyogaa`;
+const title = `${d.name}${d.sanskrit && !sanskritIsName ? ` (${d.sanskrit.simple})` : ''}: How to Practice — Yyogaa`;
 const kicker = [category?.data.name, level?.data.name].filter(Boolean).join(' · ').toUpperCase();
 
 const REVIEW_TEXT = {

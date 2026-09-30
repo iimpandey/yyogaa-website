@@ -370,6 +370,13 @@
   margin-top: 22px;
 }
 
+/* In a group that mixes image and text-only cards, let each card keep its natural
+   height, so text-only cards don't stretch into a tall, half-empty box.
+   Groups without images keep the equal-height rows. */
+.pl-card-grid:has(.pl-card-has-image) {
+  align-items: start;
+}
+
 /* Text-only pose card, styled like the explore tiles */
 .pl-card {
   position: relative;

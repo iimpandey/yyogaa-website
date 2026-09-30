@@ -53,11 +53,12 @@ modifications:
   - Place your hands on the seat of a sturdy chair set against a wall, then walk your feet back until your body makes a gentle upside-down L shape.
   - Take shorter stays of two or three breaths, resting on your knees in between.
 
-# Links to other poses. Left empty on purpose: this is the only pose in the library so far,
-# and every reference must point to a pose file that really exists (the build checks this).
-# Add e.g. `- { pose: childs-pose, relation: counter }` once childs-pose.md exists.
+# Links to other poses. Every pose named here must exist in src/content/poses/ (the build checks this).
 variations: []
-relatedPoses: []
+relatedPoses:
+  - { pose: cat-cow, relation: preparation }
+  - { pose: childs-pose, relation: counter }
+  - { pose: seated-forward-fold, relation: similar }
 
 cautions:
   - If your wrists, shoulders or the backs of your legs feel strained, bend your knees more, try the chair version, or rest.
