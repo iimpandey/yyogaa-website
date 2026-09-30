@@ -1,0 +1,271 @@
+---
+// THE pose template: one file that builds a page for every pose in src/content/poses/.
+// Sections without data are left out completely (no empty headings).
+// Layout and section order follow docs/planning/YOGA-LIBRARY-IMPLEMENTATION-PLAN.md §7.
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SafetyNote from '../../../components/ui/SafetyNote.astro';
+import ListSection from '../../../components/library/ListSection.astro';
+import {
+  getPublishedPoses,
+  requirePose,
+  resolveAll,
+  resolveOne,
+  poseUrl,
+  formatDate,
+} from '../../../lib/poses.js';
+import '../../../styles/library.css';
+
+export async function getStaticPaths() {
+  const poses = await getPublishedPoses();
+  return poses.map((pose) => ({ params: { slug: pose.id }, props: { pose } }));
+}
+
+const { pose } = Astro.props;
+const d = pose.data;
+
+// Look up display names for the controlled-vocabulary values.
+const [level, category, author, reviewer] = await Promise.all([
+  resolveOne(d.level),
+  resolveOne(d.category),
+  resolveOne(d.author),
+  resolveOne(d.reviewedBy),
+]);
+const [alsoIn, bodyFocus, props, cautionTypes] = await Promise.all([
+  resolveAll(d.alsoIn),
+  resolveAll(d.bodyFocus),
+  resolveAll(d.props),
+  resolveAll(d.cautionTypes),
+]);
+
+// Linked poses. requirePose() stops the build if a pose does not exist,
+// and returns null for drafts in production (the link is then hidden).
+const context = (field) => `src/content/poses/${pose.id}.md → ${field}`;
+const variations = (
+  await Promise.all(d.variations.map((ref, i) => requirePose(ref.id, context(`variations[${i}]`))))
+).filter(Boolean);
+
+const RELATION_GROUPS = [
+  { relation: 'preparation', heading: 'Prepare with' },
+  { relation: 'counter', heading: 'Balance it with' },
+  { relation: 'progression', heading: 'Build towards' },
+  { relation: 'similar', heading: 'Similar poses' },
+];
+const related = await Promise.all(
+  d.relatedPoses.map(async (rel, i) => ({
+    relation: rel.relation,
+    pose: await requirePose(rel.pose.id, context(`relatedPoses[${i}].pose`)),
+  })),
+);
+const relatedGroups = RELATION_GROUPS.map((group) => ({
+  ...group,
+  poses: related.filter((r) => r.relation === group.relation && r.pose).map((r) => r.pose),
+})).filter((group) => group.poses.length > 0);
+
+// Optional Markdown body ("About this pose").
+const hasBody = Boolean(pose.body?.trim());
+const { Content } = await render(pose);
+
+const sanskritDisplay = d.sanskrit?.iast ?? d.sanskrit?.simple;
+// Plain spelling is shown under "Also known as" when the IAST spelling is displayed,
+// so people (and search) can find it without accent marks.
+const alsoKnownAs = [
+  ...d.alsoKnownAs,
+  ...(d.sanskrit?.iast && d.sanskrit.simple !== d.sanskrit.iast ? [d.sanskrit.simple] : []),
+];
+
+const title = `${d.name}${d.sanskrit ? ` (${d.sanskrit.simple})` : ''}: How to Practice — Yyogaa`;
+const kicker = [category?.data.name, level?.data.name].filter(Boolean).join(' · ').toUpperCase();
+
+const REVIEW_TEXT = {
+  'not-reviewed': 'Not yet reviewed by a qualified yoga teacher. Please treat this as general guidance.',
+  'self-reviewed': 'Checked by the YYOGAA team. Not yet reviewed by a qualified yoga teacher.',
+  'teacher-reviewed': reviewer && d.reviewedAt ? `Reviewed by ${reviewer.data.name} on ${formatDate(d.reviewedAt)}.` : '',
+};
+---
+<BaseLayout title={title} description={d.summary}>
+
+<main>
+
+  <section class="pl-hero">
+    <div class="page-width">
+
+      <nav class="pl-breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/yoga">Yoga</a></li>
+          <li><a href="/yoga/poses">Poses</a></li>
+          <li><span aria-current="page">{d.name}</span></li>
+        </ol>
+      </nav>
+
+      <div class:list={['pl-hero-main', { 'pl-hero-grid': d.image }]}>
+        <div class="pl-hero-text">
+
+          {kicker && <p class="section-kicker">{kicker}</p>}
+
+          <h1>{d.name}</h1>
+
+          {sanskritDisplay && (
+            <p class="pl-sanskrit"><span lang="sa-Latn">{sanskritDisplay}</span></p>
+          )}
+          {d.sanskrit?.devanagari && (
+            <p class="pl-devanagari"><span lang="sa">{d.sanskrit.devanagari}</span></p>
+          )}
+
+          <p class="pl-summary">{d.summary}</p>
+
+          {alsoKnownAs.length > 0 && (
+            <p class="pl-aka">Also known as: {alsoKnownAs.join(', ')}</p>
+          )}
+
+        </div>
+
+        {d.image && (
+          <figure class="pl-hero-figure">
+            {/* Above the fold: `priority` = eager loading + fetchpriority="high".
+                width/height come from the file, so the space is reserved (no layout shift). */}
+            <Image
+              src={d.image.src}
+              alt={d.image.alt}
+              widths={[400, 600, 800, 1120]}
+              sizes="(max-width: 850px) 90vw, 540px"
+              priority
+            />
+            {d.image.credit && <figcaption>{d.image.credit}</figcaption>}
+          </figure>
+        )}
+      </div>
+
+    </div>
+  </section>
+
+
+  <section class="pl-glance" aria-labelledby="glance-heading">
+    <div class="page-width">
+      <h2 id="glance-heading" class="pl-glance-title">At a glance</h2>
+      <dl class="pl-glance-grid">
+        <div>
+          <dt>Level</dt>
+          <dd>{level?.data.name}</dd>
+        </div>
+        <div>
+          <dt>Type</dt>
+          <dd>{[category, ...alsoIn].filter(Boolean).map((c) => c.data.name).join(', ')}</dd>
+        </div>
+        <div>
+          <dt>Body focus</dt>
+          <dd>{bodyFocus.map((b) => b.data.name).join(', ')}</dd>
+        </div>
+        <div>
+          <dt>You will need</dt>
+          <dd>{props.map((p) => p.data.name).join(', ')}</dd>
+        </div>
+        {d.holdGuide && (
+          <div>
+            <dt>How long</dt>
+            <dd>{d.holdGuide}</dd>
+          </div>
+        )}
+        {d.sided && (
+          <div>
+            <dt>Sides</dt>
+            <dd>Practise on both sides</dd>
+          </div>
+        )}
+      </dl>
+    </div>
+  </section>
+
+
+  <div class="page-width pl-body">
+
+    <SafetyNote />
+
+    <section class="pl-section" id="how-to" aria-labelledby="how-to-heading">
+      <h2 id="how-to-heading">How to practise</h2>
+      {d.setup && <p class="pl-lead"><strong>Start here:</strong> {d.setup}</p>}
+      <ol class="pl-steps" role="list">
+        {d.steps.map((step) => <li>{step}</li>)}
+      </ol>
+      {d.breathCue && <p class="pl-cue"><strong>Breath:</strong> {d.breathCue}</p>}
+      {d.comingOut && <p class="pl-cue"><strong>Coming out:</strong> {d.comingOut}</p>}
+    </section>
+
+    <ListSection id="benefits" heading="Benefits" items={d.benefits} />
+
+    {d.commonMistakes.length > 0 && (
+      <section class="pl-section" id="mistakes" aria-labelledby="mistakes-heading">
+        <h2 id="mistakes-heading">Common mistakes</h2>
+        <ul class="pl-mistakes">
+          {d.commonMistakes.map((m) => (
+            <li>
+              <p class="pl-mistake">{m.mistake}</p>
+              <p class="pl-fix"><strong>Try instead:</strong> {m.fix}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <ListSection id="easier" heading="Make it easier" items={d.modifications} />
+
+    {variations.length > 0 && (
+      <section class="pl-section" id="further" aria-labelledby="further-heading">
+        <h2 id="further-heading">Go further</h2>
+        <ul class="pl-link-list">
+          {variations.map((v) => <li><a href={poseUrl(v.id)}>{v.data.name}</a></li>)}
+        </ul>
+      </section>
+    )}
+
+    <section class="pl-cautions" id="cautions" aria-labelledby="cautions-heading">
+      <h2 id="cautions-heading">Cautions</h2>
+      <ul class="pl-list">
+        {d.cautions.map((c) => <li>{c}</li>)}
+        {cautionTypes.map((c) => <li>{c.data.text}</li>)}
+      </ul>
+      <p class="pl-cautions-link">
+        Stop if anything hurts. For more, read our <a href="/health-disclaimer">health disclaimer</a>.
+      </p>
+    </section>
+
+    {hasBody && (
+      <section class="pl-section pl-about" id="about" aria-labelledby="about-heading">
+        <h2 id="about-heading">About this pose</h2>
+        <Content />
+      </section>
+    )}
+
+    {relatedGroups.length > 0 && (
+      <section class="pl-section" id="related" aria-labelledby="related-heading">
+        <h2 id="related-heading">Related poses</h2>
+        {relatedGroups.map((group) => (
+          <div class="pl-related-group">
+            <h3>{group.heading}</h3>
+            <ul class="pl-link-list">
+              {group.poses.map((p) => <li><a href={poseUrl(p.id)}>{p.data.name}</a></li>)}
+            </ul>
+          </div>
+        ))}
+      </section>
+    )}
+
+    <div class="pl-byline">
+      <p>
+        Written by {author?.data.name}.
+        Published {formatDate(d.publishedAt)}{d.updatedAt && <>, updated {formatDate(d.updatedAt)}</>}.
+      </p>
+      {REVIEW_TEXT[d.reviewStatus] && (
+        <p class="pl-review-status">{REVIEW_TEXT[d.reviewStatus]}</p>
+      )}
+    </div>
+
+    <p class="pl-back"><a href="/yoga/poses">← All poses</a></p>
+
+  </div>
+
+</main>
+
+</BaseLayout>

@@ -1,0 +1,38 @@
+# Controlled vocabulary: body focus (which parts of the body a pose mostly works with).
+# A pose lists 1-4 of these in `bodyFocus`. Values not listed here fail the build.
+- id: hamstrings
+  name: Hamstrings
+  description: The muscles along the back of the thighs.
+- id: hips
+  name: Hips
+  description: The area around the hip joints, front, back and sides.
+- id: spine
+  name: Spine
+  description: The back, from the base of the skull to the tailbone.
+- id: shoulders
+  name: Shoulders
+  description: The shoulder joints and the muscles around the shoulder blades.
+- id: core
+  name: Core
+  description: The muscles around the middle of the body.
+- id: legs
+  name: Legs
+  description: Thighs, knees, calves and ankles.
+- id: chest
+  name: Chest
+  description: The front of the upper body.
+- id: neck
+  name: Neck
+  description: The neck and the top of the shoulders.
+- id: wrists
+  name: Wrists
+  description: The wrists and forearms.
+- id: feet
+  name: Feet
+  description: The feet, toes and arches.
+- id: glutes
+  name: Glutes
+  description: The muscles of the buttocks.
+- id: side-body
+  name: Side body
+  description: The sides of the waist and ribs.

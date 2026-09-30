@@ -1,0 +1,285 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Contact — Yyogaa"
+  description="Contact Yyogaa for yoga, breathwork, meditation, sound, collaborations and future classes."
+>
+
+<main>
+
+  <section class="contact-hero">
+
+    <div class="page-width contact-hero-grid">
+
+      <div>
+
+        <p class="section-kicker">CONTACT YYOGAA</p>
+
+        <h1>
+          Let's
+          <span>connect.</span>
+        </h1>
+
+        <p>
+          Questions, collaborations, future classes or simply curious
+          about Yyogaa? Reach out.
+        </p>
+
+      </div>
+
+      <div class="contact-hero-image">
+
+        <img
+          src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1400&q=85"
+          alt="Meditative yoga setting"
+        >
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section contact-section">
+
+    <div class="page-width contact-layout">
+
+      <div class="contact-info">
+
+        <p class="section-kicker">GET IN TOUCH</p>
+
+        <h2>
+          Start a conversation.
+        </h2>
+
+        <p>
+          Yyogaa is still growing. If you want to ask about future
+          classes, sound sessions, partnerships or collaborations,
+          send a message.
+        </p>
+
+
+        <div class="contact-details">
+
+          <div>
+            <span>Email</span>
+            <a href="mailto:hello@yyogaa.com">
+              hello@yyogaa.com
+            </a>
+          </div>
+
+          <div>
+            <span>Instagram</span>
+            <p>Coming soon</p>
+          </div>
+
+          <div>
+            <span>Classes</span>
+            <p>Coming soon</p>
+          </div>
+
+          <div>
+            <span>Location</span>
+            <p>Coming soon</p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="contact-form-card">
+
+      <form
+  id="contact-form"
+  action="https://formspree.io/f/mgavdlkl"
+  method="POST"
+>
+         <input
+  type="hidden"
+  name="_next"
+  value="https://yyogaa-website.vercel.app/thank-you.html"
+>
+
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input
+      type="text"
+      id="name"
+      name="name"
+      placeholder="Your name"
+      required
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input
+      type="email"
+      id="email"
+      name="email"
+      placeholder="you@example.com"
+      required
+    >
+  </div>
+
+  <div class="form-group">
+    <label for="interest">I'm interested in</label>
+
+    <select id="interest" name="interest">
+      <option value="Yoga">Yoga</option>
+      <option value="Breathwork">Breathwork</option>
+      <option value="Meditation">Meditation</option>
+      <option value="Sound">Sound</option>
+      <option value="Collaboration">Collaboration</option>
+      <option value="Other">Something else</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="message">Message</label>
+
+    <textarea
+      id="message"
+      name="message"
+      rows="6"
+      placeholder="Tell us a little about what you're looking for..."
+      required
+    ></textarea>
+  </div>
+
+  <input
+    type="hidden"
+    name="_subject"
+    value="New Yyogaa Website Message"
+  >
+
+  <button type="submit" class="button button-gold-dark">
+    Send Message
+  </button>
+
+</form>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="section contact-options">
+
+    <div class="page-width">
+
+      <div class="center-heading">
+
+        <p class="section-kicker">
+          EXPLORE
+        </p>
+
+        <h2>
+          Where would you like to begin?
+        </h2>
+
+      </div>
+
+
+      <div class="contact-option-grid">
+
+        <a href="/yoga">
+
+          <span>01</span>
+
+          <h3>
+            Yoga
+          </h3>
+
+          <p>
+            Move with intention →
+          </p>
+
+        </a>
+
+
+        <a href="/breathwork">
+
+          <span>02</span>
+
+          <h3>
+            Breath
+          </h3>
+
+          <p>
+            Breathe with awareness →
+          </p>
+
+        </a>
+
+
+        <a href="/meditation">
+
+          <span>03</span>
+
+          <h3>
+            Meditation
+          </h3>
+
+          <p>
+            Return to stillness →
+          </p>
+
+        </a>
+
+
+        <a href="/sound">
+
+          <span>04</span>
+
+          <h3>
+            Sound
+          </h3>
+
+          <p>
+            Listen deeply →
+          </p>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section class="final-cta">
+
+    <div>
+
+      <p class="section-kicker">
+        YYOGAA
+      </p>
+
+      <h2>
+        Start where
+        you are.
+      </h2>
+
+      <p>
+        One movement.
+        One breath.
+        One moment at a time.
+      </p>
+
+      <a href="/yoga" class="button button-gold">
+        Explore Yyogaa
+      </a>
+
+    </div>
+
+  </section>
+
+</main>
+
+</BaseLayout>

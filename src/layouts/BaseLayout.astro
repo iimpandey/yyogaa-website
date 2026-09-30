@@ -1,0 +1,54 @@
+---
+// BaseLayout: the shared <html>, <head>, header, footer and script for every page.
+// Each page passes its own title and (optionally) meta description.
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  /** Meta description. Leave out to output no description tag (thank-you has none today). */
+  description?: string;
+  /** Show the "Explore" link in the header's right side (every page except thank-you today). */
+  showExplore?: boolean;
+}
+
+const { title, description, showExplore = true } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>{title}</title>
+{description && (
+  <meta
+    name="description"
+    content={description}
+  >
+)}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@1,500;1,600&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Unchanged copy of the original style.css, served from public/ -->
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<Header showExplore={showExplore} />
+
+<slot />
+
+<Footer />
+
+<!-- Unchanged copy of the original script.js (mobile menu + contact form), served from public/ -->
+<script is:inline src="/script.js"></script>
+</body>
+</html>

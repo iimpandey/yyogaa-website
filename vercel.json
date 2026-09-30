@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/yoga.html", "destination": "/yoga", "permanent": true },
+    { "source": "/breathwork.html", "destination": "/breathwork", "permanent": true },
+    { "source": "/meditation.html", "destination": "/meditation", "permanent": true },
+    { "source": "/sound.html", "destination": "/sound", "permanent": true },
+    { "source": "/journal.html", "destination": "/journal", "permanent": true },
+    { "source": "/about.html", "destination": "/about", "permanent": true },
+    { "source": "/contact.html", "destination": "/contact", "permanent": true },
+    { "source": "/thank-you.html", "destination": "/thank-you", "permanent": true }
+  ]
+}

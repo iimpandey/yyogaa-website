@@ -1,0 +1,43 @@
+---
+// Header: logo, desktop navigation, right-hand links and the mobile menu button.
+// Markup copied from the current site. The mobile menu itself is in MobileMenu.astro.
+import MobileMenu from './MobileMenu.astro';
+
+interface Props {
+  /** The thank-you page currently has no "Explore" link here, so it passes false. */
+  showExplore?: boolean;
+}
+
+const { showExplore = true } = Astro.props;
+---
+<header class="navbar">
+  <div class="nav-container">
+
+    <a href="/" class="logo">YYOGAA</a>
+
+    <nav class="desktop-nav">
+      <a href="/yoga">Yoga</a>
+      <a href="/breathwork">Breath</a>
+      <a href="/meditation">Meditation</a>
+      <a href="/sound">Sound</a>
+      <a href="/journal">Journal</a>
+      <a href="/about">About</a>
+    </nav>
+
+    <div class="nav-right">
+{showExplore && (
+      <a href="/#explore" class="nav-secondary">Explore</a>
+)}
+      <a href="/contact" class="nav-primary">Contact</a>
+
+      <button type="button" class="mobile-menu-button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+  </div>
+
+  <MobileMenu />
+</header>

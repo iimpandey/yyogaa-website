@@ -1,0 +1,494 @@
+/* =========================================================================
+   POSE LIBRARY STYLES
+   Loaded ONLY by the pose library pages and the health disclaimer page
+   (they import this file). Every class starts with "pl-" so nothing here can
+   affect the existing pages. Reuses the existing tokens from /style.css.
+   ========================================================================= */
+
+:root {
+  /* Darker gold for small text on cream: 5.4:1 on #f5f1e7 (WCAG AA).
+     The brand gold (#baa060) is only used on dark backgrounds (6.7:1 on charcoal). */
+  --gold-text: #765f2e;
+  --pl-sand: #d8cfbc;
+  --pl-sand-text: #4a463e; /* labels on the sand band */
+  --pl-soft-panel: #efe9dc;
+  --pl-panel: #faf7f0;
+}
+
+/* ---------- Dark hero (text only, like the journal hero) ---------- */
+
+.pl-hero {
+  padding: 60px 0 80px;
+  background: var(--charcoal);
+  color: white;
+}
+
+.pl-breadcrumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin-bottom: 44px;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.pl-breadcrumbs li + li::before {
+  content: "›";
+  margin-right: 8px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.pl-breadcrumbs a {
+  color: rgba(255, 255, 255, 0.88);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(255, 255, 255, 0.35);
+}
+
+.pl-breadcrumbs a:hover {
+  text-decoration-color: currentColor;
+}
+
+.pl-hero h1 {
+  max-width: 900px;
+  margin-top: 16px;
+  font-size: clamp(2.2rem, 7.5vw, 5.6rem);
+  line-height: 0.95;
+  overflow-wrap: break-word;
+}
+
+.pl-hero h1 span {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+}
+
+.pl-sanskrit {
+  margin-top: 14px;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  color: var(--gold);
+}
+
+.pl-devanagari {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.pl-summary {
+  max-width: 620px;
+  margin-top: 24px;
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.pl-aka {
+  margin-top: 14px;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Hero with an image: text left, image right (stacked on small screens).
+   Without an image none of these rules apply and the hero stays text-only. */
+.pl-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 540px);
+  gap: 56px;
+  align-items: center;
+}
+
+.pl-hero-grid h1 {
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+}
+
+.pl-hero-figure img {
+  width: 100%;
+  height: auto;
+  /* A fixed 4:3 frame (the plan's illustration format). Combined with the width/height
+     attributes Astro adds, the browser reserves the space before the file loads. */
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  background: var(--cream);
+  border-radius: 18px;
+}
+
+.pl-hero-figure figcaption {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (max-width: 850px) {
+  .pl-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+.pl-hero a:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- At a glance (sand grounding band) ---------- */
+
+.pl-glance {
+  padding: 36px 0 40px;
+  background: var(--pl-sand);
+}
+
+.pl-glance-title {
+  margin-bottom: 16px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+}
+
+.pl-glance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  column-gap: 24px;
+  border-top: 1px solid rgba(29, 29, 25, 0.18);
+}
+
+.pl-glance-grid > div {
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(29, 29, 25, 0.18);
+}
+
+.pl-glance-grid dt {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pl-sand-text);
+}
+
+.pl-glance-grid dd {
+  margin-top: 4px;
+  font-size: 0.98rem;
+}
+
+/* ---------- Main content column ---------- */
+
+.pl-body {
+  width: min(780px, 90%);
+  padding: 48px 0 96px;
+}
+
+.pl-body-wide {
+  width: min(1180px, 90%);
+}
+
+.pl-body a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pl-body a:focus-visible {
+  outline: 2px solid var(--charcoal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.pl-section {
+  margin-top: 56px;
+}
+
+.pl-body > .pl-section:first-child {
+  margin-top: 0;
+}
+
+.pl-section h2,
+.pl-cautions h2 {
+  margin-bottom: 16px;
+  font-size: clamp(1.55rem, 3vw, 2.1rem);
+  line-height: 1.1;
+}
+
+.pl-section h3 {
+  margin: 20px 0 8px;
+  font-size: 1.1rem;
+}
+
+.pl-list {
+  padding-left: 1.2em;
+}
+
+.pl-list li + li {
+  margin-top: 8px;
+}
+
+.pl-link-list {
+  padding-left: 1.2em;
+}
+
+.pl-prose p + p,
+.pl-about p + p {
+  margin-top: 12px;
+}
+
+/* Short health note */
+.pl-safety-note {
+  padding: 16px 20px;
+  font-size: 0.9rem;
+  background: var(--pl-soft-panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 14px;
+}
+
+/* Numbered steps: 01, 02 … like the foundation cards */
+.pl-steps {
+  list-style: none;
+  counter-reset: pl-step;
+  border-bottom: 1px solid var(--line);
+}
+
+.pl-steps li {
+  position: relative;
+  padding: 14px 0 14px 52px;
+  border-top: 1px solid var(--line);
+  counter-increment: pl-step;
+}
+
+.pl-steps li::before {
+  content: counter(pl-step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 16px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--gold-text);
+}
+
+.pl-lead {
+  margin-bottom: 16px;
+}
+
+.pl-cue {
+  margin-top: 14px;
+}
+
+/* Common mistakes */
+.pl-mistakes {
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+
+.pl-mistakes li {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.pl-mistake {
+  font-weight: 600;
+}
+
+.pl-fix {
+  margin-top: 4px;
+  color: var(--text-soft);
+}
+
+/* Cautions box: calm, not alarming */
+.pl-cautions {
+  margin-top: 56px;
+  padding: 26px 28px;
+  background: var(--pl-panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: 18px;
+}
+
+.pl-cautions h2 {
+  color: var(--gold-text);
+}
+
+.pl-cautions-link {
+  margin-top: 16px;
+  font-size: 0.92rem;
+}
+
+/* Byline and review status */
+.pl-byline {
+  margin-top: 56px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.pl-review-status {
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.pl-back {
+  margin-top: 28px;
+  font-weight: 600;
+}
+
+/* ---------- Library page ---------- */
+
+.pl-library-intro {
+  max-width: 680px;
+  margin-top: 28px;
+  color: var(--text-soft);
+}
+
+.pl-count {
+  margin-top: 32px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.pl-category {
+  margin-top: 24px;
+}
+
+.pl-category-desc {
+  max-width: 680px;
+  color: var(--text-soft);
+}
+
+.pl-card-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+
+/* Text-only pose card, styled like the explore tiles */
+.pl-card {
+  position: relative;
+  height: 100%;
+  padding: 24px 22px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Optional card image: flush with the card's top edge, fixed 4:3 frame (no layout shift). */
+.pl-card-media {
+  margin: -24px -22px 18px;
+  overflow: hidden;
+  background: var(--cream-dark);
+  border-radius: 17px 17px 0 0;
+}
+
+.pl-card-media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+}
+
+.pl-card-name {
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.pl-body .pl-card-name a {
+  text-decoration: none;
+}
+
+/* Stretch the link over the whole card so the card is one big target */
+.pl-card-name a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.pl-card-sanskrit {
+  margin-top: 4px;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  color: var(--gold-text);
+}
+
+.pl-card-meta {
+  margin-top: 14px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+
+.pl-card-summary {
+  margin-top: 8px;
+  font-size: 0.92rem;
+  color: var(--text-soft);
+}
+
+/* Charcoal invert on hover AND keyboard focus */
+.pl-card:hover,
+.pl-card:focus-within {
+  background: var(--charcoal);
+  color: white;
+}
+
+.pl-card:hover .pl-card-sanskrit,
+.pl-card:focus-within .pl-card-sanskrit {
+  color: var(--gold);
+}
+
+.pl-card:hover .pl-card-meta,
+.pl-card:hover .pl-card-summary,
+.pl-card:focus-within .pl-card-meta,
+.pl-card:focus-within .pl-card-summary {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.pl-body .pl-card-name a:focus-visible {
+  outline: none;
+}
+
+.pl-card:focus-within {
+  outline: 2px solid var(--charcoal);
+  outline-offset: 3px;
+}
+
+/* ---------- Small screens and motion ---------- */
+
+@media (max-width: 650px) {
+  .pl-hero {
+    padding: 40px 0 60px;
+  }
+
+  .pl-breadcrumbs ol {
+    margin-bottom: 32px;
+  }
+
+  .pl-body {
+    padding: 36px 0 72px;
+  }
+
+  .pl-steps li {
+    padding-left: 44px;
+  }
+
+  .pl-cautions {
+    padding: 22px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pl-card {
+    transition: none;
+  }
+}

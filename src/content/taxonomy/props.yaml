@@ -1,0 +1,25 @@
+# Controlled vocabulary: props. A pose lists at least one in `props`; use `none` when nothing is needed.
+- id: none
+  name: No props
+  description: Nothing needed beyond a comfortable space.
+- id: mat
+  name: Mat
+  description: A non-slip yoga mat.
+- id: block
+  name: Block
+  description: A firm foam, cork or wooden block.
+- id: strap
+  name: Strap
+  description: A yoga strap, belt or scarf.
+- id: bolster
+  name: Bolster
+  description: A firm cushion, or a few folded blankets.
+- id: blanket
+  name: Blanket
+  description: A folded blanket for padding or height.
+- id: chair
+  name: Chair
+  description: A sturdy chair without wheels.
+- id: wall
+  name: Wall
+  description: A clear wall for support.

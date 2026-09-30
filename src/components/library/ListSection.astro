@@ -1,0 +1,21 @@
+---
+// ListSection: a heading plus a bulleted list.
+// Renders NOTHING when the list is empty, so no page ever shows an empty heading.
+interface Props {
+  /** Used for the section's id and aria-labelledby, e.g. "benefits". */
+  id: string;
+  heading: string;
+  items?: string[];
+}
+
+const { id, heading, items = [] } = Astro.props;
+const headingId = `${id}-heading`;
+---
+{items.length > 0 && (
+  <section class="pl-section" id={id} aria-labelledby={headingId}>
+    <h2 id={headingId}>{heading}</h2>
+    <ul class="pl-list">
+      {items.map((item) => <li>{item}</li>)}
+    </ul>
+  </section>
+)}
