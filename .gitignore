@@ -1,0 +1,14 @@
+# Installed packages (recreated with `npm install`)
+node_modules/
+
+# Astro build output and cache (recreated with `npm run build` / `npm run dev`)
+dist/
+.astro/
+
+# Vercel CLI local folder
+.vercel/
+
+# Secrets (none yet — kept out of Git by default)
+.env
+.env.*
+!.env.example
