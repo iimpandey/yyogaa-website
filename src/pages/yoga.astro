@@ -192,6 +192,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       </div>
 
+
+      <div class="pose-library-cta">
+
+        <div class="center-heading">
+          <p class="section-kicker">POSE LIBRARY</p>
+          <h2>Explore Yoga Poses</h2>
+          <p>
+            Browse 10 beginner-friendly pose guides with clear instructions,
+            modifications and safety notes.
+          </p>
+        </div>
+
+        <a href="/yoga/poses" class="button button-gold-dark">
+          View Pose Library
+        </a>
+
+      </div>
+
     </div>
 
   </section>
@@ -312,3 +330,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </main>
 
 </BaseLayout>
+
+<style>
+  /* Link to the Yoga Pose Library, closing the "Explore Yoga" section. Reuses the
+     site's existing heading and button styles; only spacing is set here. */
+  .pose-library-cta {
+    margin-top: 90px;
+    padding-top: 80px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .pose-library-cta .center-heading {
+    margin-bottom: 30px;
+  }
+
+  @media (max-width: 650px) {
+    .pose-library-cta {
+      margin-top: 64px;
+      padding-top: 56px;
+    }
+  }
+</style>
