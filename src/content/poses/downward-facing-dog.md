@@ -65,15 +65,16 @@ cautions:
   - Move into and out of the pose slowly, especially if you are not used to having your head lower than your heart.
 cautionTypes: [wrists, head-below-heart]
 
-# Image: none yet (text-only launch). To add one later:
-#   1. Save the file as src/content/poses/images/downward-facing-dog.svg (or .png / .jpg / .webp)
-#   2. Remove the "# " from the 5 lines below, and change imageStatus to final (or placeholder)
-# image:
-#   src: ./images/downward-facing-dog.svg
-#   alt: "Line drawing of a person in Downward-Facing Dog: hands and feet on the mat, hips lifted high, knees softly bent, body forming an upside-down V."
-#   credit: "Illustration: <illustrator name> for YYOGAA"
-#   license: commissioned
-imageStatus: none
+# Image: original AI-generated illustration, created specifically for YYOGAA
+# (see docs/planning/POSE-IMAGE-STYLE-GUIDE.md §3 and §11). Keep the provenance details
+# (tool/model, date, prompts, manual edits) in the private image log, not in this repo.
+# Status stays "placeholder" until a qualified yoga teacher has reviewed the alignment.
+image:
+  src: ./images/downward-facing-dog.png
+  alt: "Side view of a person in Downward-Facing Dog on a yoga mat: hands flat with fingers spread, arms long, hips lifted highest, knees softly bent, heels lifted off the mat, head relaxed between the upper arms, body forming an upside-down V."
+  credit: "Illustration: AI-generated original for YYOGAA"
+  license: owned
+imageStatus: placeholder
 
 author: yyogaa-team
 reviewStatus: not-reviewed
