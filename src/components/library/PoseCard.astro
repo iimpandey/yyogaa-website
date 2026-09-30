@@ -1,0 +1,39 @@
+---
+// PoseCard: a card linking to one pose page (used on the library page).
+// The whole card is clickable: the link inside the heading is stretched over the card.
+// If the pose has an image it is shown at the top; otherwise the card stays text-only.
+import { Image } from 'astro:assets';
+import { poseUrl } from '../../lib/poses.js';
+
+interface Props {
+  pose: any; // a 'poses' collection entry
+  levelName: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { pose, levelName, headingLevel = 'h3' } = Astro.props;
+const { name, sanskrit, summary, image } = pose.data;
+const Heading = headingLevel;
+const sanskritText = sanskrit?.iast ?? sanskrit?.simple;
+---
+<article class:list={['pl-card', { 'pl-card-has-image': image }]}>
+  {image && (
+    <div class="pl-card-media">
+      {/* alt="" on purpose: the card's heading already names the pose and the card is one
+          link, so a description here would be repeated to screen-reader users. The full,
+          descriptive alt text is used on the pose page itself. Lazy-loaded by default. */}
+      <Image
+        src={image.src}
+        alt=""
+        widths={[320, 480, 640]}
+        sizes="(max-width: 650px) 90vw, 300px"
+      />
+    </div>
+  )}
+  <Heading class="pl-card-name">
+    <a href={poseUrl(pose.id)}>{name}</a>
+  </Heading>
+  {sanskritText && <p class="pl-card-sanskrit"><span lang="sa-Latn">{sanskritText}</span></p>}
+  <p class="pl-card-meta">{levelName}</p>
+  <p class="pl-card-summary">{summary}</p>
+</article>

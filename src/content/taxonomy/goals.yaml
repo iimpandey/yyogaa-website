@@ -1,0 +1,31 @@
+# Controlled vocabulary: goals (shared later with breathwork, meditation and articles).
+- id: calm
+  name: Calm
+  description: Practices many people find settling.
+- id: sleep
+  name: Sleep
+  description: Gentle practices for winding down in the evening.
+- id: focus
+  name: Focus
+  description: Practices that invite attention and steadiness.
+- id: energy
+  name: Energy
+  description: Practices many people find waking and enlivening.
+- id: flexibility
+  name: Flexibility
+  description: Practices that gently explore range of movement.
+- id: strength
+  name: Strength
+  description: Practices that build steady, useful strength.
+- id: mobility
+  name: Mobility
+  description: Practices that move the joints through a comfortable range.
+- id: recovery
+  name: Recovery
+  description: Restful practices for after effort or a long day.
+- id: posture
+  name: Posture
+  description: Practices that build awareness of how you stand and sit.
+- id: beginner-friendly
+  name: Beginner-friendly
+  description: A good place to start if you are new to yoga.

@@ -1,0 +1,12 @@
+# Controlled vocabulary: pose levels.
+# Each pose has exactly ONE level. A pose whose `level` is not an `id` below fails the build.
+# Adding a value is a deliberate change: do it in its own small, reviewed change.
+- id: beginner
+  name: Beginner
+  description: Accessible shapes for people who are new to yoga or returning after a break.
+- id: intermediate
+  name: Intermediate
+  description: Poses that ask for more strength, balance or flexibility, built on the beginner basics.
+- id: advanced
+  name: Advanced
+  description: Demanding poses best explored with experience and, ideally, a qualified teacher nearby.

@@ -1,0 +1,39 @@
+# Controlled vocabulary: pose categories.
+# Each pose has ONE primary `category` and optional extra `alsoIn` categories.
+# Values not listed here fail the build.
+- id: standing
+  name: Standing poses
+  description: Poses on your feet that build steadiness, strength and awareness of alignment.
+- id: seated
+  name: Seated poses
+  description: Grounded poses practised sitting on the mat, a cushion or a chair.
+- id: forward-fold
+  name: Forward folds
+  description: Poses that fold the body forward, practised slowly and without forcing.
+- id: backbend
+  name: Backbends
+  description: Poses that gently open the front of the body and extend the spine.
+- id: twist
+  name: Twists
+  description: Gentle rotations of the spine, practised slowly and with a long back.
+- id: balance
+  name: Balancing poses
+  description: Poses that ask for focus and steadiness, often standing on one leg.
+- id: hip-opener
+  name: Hip openers
+  description: Poses that invite movement and ease around the hips.
+- id: inversion
+  name: Inversions
+  description: Poses where the head is lower than the heart, from gentle to more demanding.
+- id: arm-balance
+  name: Arm balances
+  description: Poses where the hands carry most or all of the body's weight.
+- id: supine
+  name: Lying on your back
+  description: Poses practised lying on your back, often calm and well supported.
+- id: prone
+  name: Lying on your front
+  description: Poses practised lying on your front.
+- id: restorative
+  name: Restorative poses
+  description: Fully supported, restful poses held for longer with props.

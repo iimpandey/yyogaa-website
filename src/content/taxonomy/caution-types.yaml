@@ -1,0 +1,39 @@
+# Controlled vocabulary: caution types.
+# Each entry holds ONE standard safety sentence, written once and reused on every pose that
+# lists it in `cautionTypes`. This keeps safety wording consistent across the library.
+#
+# STATUS: DRAFT wording by the YYOGAA team. Not yet reviewed by a qualified yoga teacher
+# or health professional. Review these sentences before the library is treated as authoritative.
+- id: wrists
+  name: Wrists
+  text: This pose puts weight on your hands. If your wrists are sore or injured, choose a gentler option or leave it out.
+- id: knees
+  name: Knees
+  text: This pose asks a lot of the knees. Pad them with a folded blanket, and ease off if you feel any sharp or twisting sensation.
+- id: lower-back
+  name: Lower back
+  text: Keep your lower back comfortable. Ease off straight away if you feel pinching or pain there.
+- id: neck
+  name: Neck
+  text: Keep your neck free of strain and never put your body weight on your head or neck.
+- id: shoulders
+  name: Shoulders
+  text: This pose asks a lot of the shoulders. If you have a shoulder injury, choose a gentler option or check with a health professional first.
+- id: balance-falls
+  name: Balance and falls
+  text: This pose challenges your balance. Practise near a wall or a sturdy chair you can hold, on a non-slip surface.
+- id: head-below-heart
+  name: Head below the heart
+  text: Poses with the head below the heart may not suit people with high or low blood pressure, glaucoma, or a tendency to feel dizzy. Check with a health professional first.
+- id: deep-backbend
+  name: Deep backbend
+  text: Deep backbends can strain the lower back and neck. Build up gradually, and stop if you feel pain.
+- id: deep-twist
+  name: Deep twist
+  text: Twist gently from a long spine, and never force the rotation.
+- id: pregnancy
+  name: Pregnancy
+  text: If you are pregnant, check with your midwife or doctor before practising this pose.
+- id: recent-injury-or-surgery
+  name: Recent injury or surgery
+  text: If you have had a recent injury or surgery, check with a health professional before practising this pose.

@@ -1,0 +1,85 @@
+---
+// The pose library page (/yoga/poses): every published pose as a text card,
+// grouped by primary category in the order of src/content/taxonomy/pose-categories.yaml.
+// Works without JavaScript. Filters and search come in a later step (plan §8, steps L6/L12).
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import SafetyNote from '../../../components/ui/SafetyNote.astro';
+import PoseCard from '../../../components/library/PoseCard.astro';
+import { getPublishedPoses } from '../../../lib/poses.js';
+import '../../../styles/library.css';
+
+const poses = await getPublishedPoses();
+const categories = await getCollection('poseCategories'); // keeps the YAML order
+const levels = await getCollection('levels');
+const levelName = (ref) => levels.find((l) => l.id === ref.id)?.data.name ?? '';
+
+const groups = categories
+  .map((category) => ({
+    category,
+    poses: poses.filter((p) => p.data.category.id === category.id),
+  }))
+  .filter((group) => group.poses.length > 0);
+
+const count = poses.length;
+---
+<BaseLayout
+  title="Yoga Pose Library — Yyogaa"
+  description="Clear, gentle guides to yoga poses: how to practise each one, easier options, common mistakes and when to take care."
+>
+
+<main>
+
+  <section class="pl-hero">
+    <div class="page-width">
+
+      <nav class="pl-breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="/">Home</a></li>
+          <li><a href="/yoga">Yoga</a></li>
+          <li><span aria-current="page">Poses</span></li>
+        </ol>
+      </nav>
+
+      <p class="section-kicker">YYOGAA POSE LIBRARY</p>
+
+      <h1>One pose <span>at a time.</span></h1>
+
+      <p class="pl-summary">
+        Plain-language guides to yoga poses: how to come into each shape,
+        how to make it easier, and when to take care.
+      </p>
+
+    </div>
+  </section>
+
+
+  <div class="page-width pl-body pl-body-wide">
+
+    <SafetyNote />
+
+    <p class="pl-library-intro">
+      This library is new and grows slowly, one carefully written pose at a time.
+      Pose guides are not yet reviewed by a qualified yoga teacher, so please treat
+      them as general guidance.
+    </p>
+
+    <p class="pl-count">{count} {count === 1 ? 'pose' : 'poses'}</p>
+
+    {groups.map(({ category, poses }) => (
+      <section class="pl-section pl-category" id={category.id} aria-labelledby={`${category.id}-heading`}>
+        <h2 id={`${category.id}-heading`}>{category.data.name}</h2>
+        <p class="pl-category-desc">{category.data.description}</p>
+        <ul class="pl-card-grid" role="list">
+          {poses.map((pose) => (
+            <li><PoseCard pose={pose} levelName={levelName(pose.data.level)} /></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+  </div>
+
+</main>
+
+</BaseLayout>
