@@ -8,9 +8,14 @@ import SafetyNote from '../../../components/ui/SafetyNote.astro';
 import PoseCard from '../../../components/library/PoseCard.astro';
 import { getPublishedPoses } from '../../../lib/poses.js';
 import '../../../styles/library.css';
+// The raw text of the categories file, only to read the ORDER of its ids
+// (getCollection does not keep the file's order). `?raw` is built into Vite.
+import categoriesYaml from '../../../content/taxonomy/pose-categories.yaml?raw';
 
 const poses = await getPublishedPoses();
-const categories = await getCollection('poseCategories'); // keeps the YAML order
+const categoryOrder = [...categoriesYaml.matchAll(/^- id:\s*([a-z0-9-]+)/gm)].map((m) => m[1]);
+const position = (id) => (categoryOrder.includes(id) ? categoryOrder.indexOf(id) : categoryOrder.length);
+const categories = (await getCollection('poseCategories')).sort((a, b) => position(a.id) - position(b.id));
 const levels = await getCollection('levels');
 const levelName = (ref) => levels.find((l) => l.id === ref.id)?.data.name ?? '';
 
