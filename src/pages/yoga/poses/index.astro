@@ -1,7 +1,9 @@
 ---
-// The pose library page (/yoga/poses): every published pose as a text card,
-// grouped by primary category in the order of src/content/taxonomy/pose-categories.yaml.
-// Works without JavaScript. Filters and search come in a later step (plan §8, steps L6/L12).
+// The pose library page (/yoga/poses): every published pose as a card, grouped by primary
+// category in the order of src/content/taxonomy/pose-categories.yaml.
+// Works without JavaScript: all poses are listed. With JavaScript, a search box and category
+// filter buttons show/hide cards instantly and keep the choice in the URL
+// (?q=…&category=…) so the view can be shared or reloaded (plan §8).
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import SafetyNote from '../../../components/ui/SafetyNote.astro';
@@ -27,6 +29,31 @@ const groups = categories
   .filter((group) => group.poses.length > 0);
 
 const count = poses.length;
+
+// Filter buttons: the categories used as a primary category by at least one pose, in
+// taxonomy order. A button matches a pose's primary category AND its `alsoIn` categories.
+const filterCategories = groups.map(({ category }) => category);
+
+// Text the search box matches against: English name, other names and Sanskrit names.
+// Lowercased, accents removed (Śvānāsana → svanasana), punctuation turned into spaces.
+// The page script uses the same rule on what the visitor types.
+const toSearchText = (text) =>
+  text
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/['’]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+
+const searchText = (pose) =>
+  toSearchText(
+    [pose.data.name, ...pose.data.alsoKnownAs, pose.data.sanskrit?.iast, pose.data.sanskrit?.simple]
+      .filter(Boolean)
+      .join(' '),
+  );
+
+const poseCategories = (pose) => [pose.data.category.id, ...pose.data.alsoIn.map((ref) => ref.id)].join(' ');
 ---
 <BaseLayout
   title="Yoga Pose Library — Yyogaa"
@@ -69,22 +96,184 @@ const count = poses.length;
       them as general guidance.
     </p>
 
-    <p class="pl-count">{count} {count === 1 ? 'pose' : 'poses'}</p>
+    {/* Hidden until the script runs, so visitors without JavaScript never see controls
+        that do nothing; they get the full list below. */}
+    <form class="pl-filters" role="search" action="/yoga/poses" method="get" data-pose-filters hidden>
+
+      <div class="pl-search">
+        <label for="pose-search" class="pl-visually-hidden">Search yoga poses</label>
+        <input
+          type="search"
+          id="pose-search"
+          name="q"
+          placeholder="Search yoga poses..."
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+
+      <div class="pl-chips" role="group" aria-label="Filter by category">
+        <button type="button" class="pl-chip" data-category="" aria-pressed="true">All</button>
+        {filterCategories.map((category) => (
+          <button type="button" class="pl-chip" data-category={category.id} aria-pressed="false">
+            {category.data.name.replace(/ poses$/, '')}
+          </button>
+        ))}
+      </div>
+
+    </form>
+
+    <p class="pl-count" aria-live="polite" data-pose-count>{count} {count === 1 ? 'pose' : 'poses'}</p>
 
     {groups.map(({ category, poses }) => (
-      <section class="pl-section pl-category" id={category.id} aria-labelledby={`${category.id}-heading`}>
+      <section class="pl-section pl-category" id={category.id} aria-labelledby={`${category.id}-heading`} data-pose-group>
         <h2 id={`${category.id}-heading`}>{category.data.name}</h2>
         <p class="pl-category-desc">{category.data.description}</p>
         <ul class="pl-card-grid" role="list">
           {poses.map((pose) => (
-            <li><PoseCard pose={pose} levelName={levelName(pose.data.level)} /></li>
+            <li data-pose-item data-search={searchText(pose)} data-categories={poseCategories(pose)}>
+              <PoseCard pose={pose} levelName={levelName(pose.data.level)} />
+            </li>
           ))}
         </ul>
       </section>
     ))}
+
+    <div class="pl-empty" data-pose-empty hidden>
+      <p>No poses found. Try another search or filter.</p>
+      <button type="button" class="button pl-empty-clear" data-pose-clear>Clear</button>
+    </div>
 
   </div>
 
 </main>
 
 </BaseLayout>
+
+<script>
+  // Instant search + category filter for the pose library. Plain JavaScript, no packages.
+  const form = document.querySelector('[data-pose-filters]');
+
+  if (form) {
+    const input = form.querySelector('input[type="search"]');
+    const chips = [...form.querySelectorAll('.pl-chip')];
+    const items = [...document.querySelectorAll('[data-pose-item]')];
+    const groups = [...document.querySelectorAll('[data-pose-group]')];
+    const countEl = document.querySelector('[data-pose-count]');
+    const emptyEl = document.querySelector('[data-pose-empty]');
+    const clearBtn = document.querySelector('[data-pose-clear]');
+    const knownCategories = chips.map((chip) => chip.dataset.category).filter(Boolean);
+
+    // Must match toSearchText() in the page frontmatter.
+    const toSearchText = (text) =>
+      text
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/['’]/g, '')
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, ' ')
+        .trim();
+
+    const total = items.length;
+    let category = '';
+    let urlTimer;
+
+    // Keep the choice in the address so it can be shared or reloaded. Only replaces the
+    // current history entry (Back still leaves the page), and only when the address really
+    // changes: browsers limit how often replaceState may be called.
+    const writeUrl = () => {
+      clearTimeout(urlTimer);
+      const params = new URLSearchParams(location.search);
+      const q = input.value.trim();
+      q ? params.set('q', q) : params.delete('q');
+      category ? params.set('category', category) : params.delete('category');
+      const query = params.toString();
+      const next = `${location.pathname}${query ? `?${query}` : ''}${location.hash}`;
+      if (next === `${location.pathname}${location.search}${location.hash}`) return;
+      try {
+        history.replaceState(history.state, '', next);
+      } catch {
+        // Too many updates in a short time (Safari): the address is simply not updated.
+      }
+    };
+
+    const setCategory = (id) => {
+      category = knownCategories.includes(id) ? id : '';
+      for (const chip of chips) {
+        chip.setAttribute('aria-pressed', String(chip.dataset.category === category));
+      }
+    };
+
+    const update = () => {
+      // Every word typed must match the START of a word in the pose's names, so "down dog"
+      // finds Downward-Facing Dog, but "war" finds Warrior II and not "Forward Fold".
+      const words = toSearchText(input.value).split(' ').filter(Boolean);
+      let shown = 0;
+
+      for (const item of items) {
+        const inCategory = !category || item.dataset.categories.split(' ').includes(category);
+        const names = ` ${item.dataset.search}`;
+        const matchesText = words.every((word) => names.includes(` ${word}`));
+        const visible = inCategory && matchesText;
+        item.hidden = !visible;
+        if (visible) shown += 1;
+      }
+
+      for (const group of groups) {
+        group.hidden = !group.querySelector('[data-pose-item]:not([hidden])');
+      }
+
+      // "10 poses" when nothing is filtered, otherwise "3 of 10 poses". Only written when the
+      // text changes, so screen readers are not told the same count again.
+      const countText =
+        words.length === 0 && !category
+          ? `${shown} ${shown === 1 ? 'pose' : 'poses'}`
+          : `${shown} of ${total} ${total === 1 ? 'pose' : 'poses'}`;
+      if (countEl.textContent !== countText) countEl.textContent = countText;
+      emptyEl.hidden = shown > 0;
+
+      clearTimeout(urlTimer);
+      urlTimer = setTimeout(writeUrl, 250);
+    };
+
+    // Start from the address, e.g. /yoga/poses?category=backbend&q=cobra. Unknown values are ignored.
+    const params = new URLSearchParams(location.search);
+    input.value = params.get('q') ?? '';
+    setCategory(params.get('category') ?? '');
+
+    input.addEventListener('input', update);
+    // Escape clears the search box. Most browsers already do this for type="search" but
+    // Firefox does not, so it is done here for everyone.
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && input.value !== '') {
+        event.preventDefault();
+        input.value = '';
+        update();
+      }
+    });
+    // Save a pending address change before leaving, e.g. when a pose card is opened right
+    // after typing, so Back or reload returns to the same filtered view.
+    document.addEventListener('click', (event) => {
+      if (event.target.closest?.('a[href]')) writeUrl();
+    });
+    window.addEventListener('pagehide', writeUrl);
+    form.addEventListener('submit', (event) => event.preventDefault());
+
+    for (const chip of chips) {
+      chip.addEventListener('click', () => {
+        setCategory(chip.dataset.category);
+        update();
+      });
+    }
+
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      setCategory('');
+      update();
+      input.focus();
+    });
+
+    form.hidden = false;
+    update();
+  }
+</script>
