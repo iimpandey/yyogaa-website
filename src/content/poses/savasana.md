@@ -57,6 +57,7 @@ variations: []
 relatedPoses:
   - { pose: seated-forward-fold, relation: preparation }
   - { pose: childs-pose, relation: similar }
+  - { pose: legs-up-the-wall, relation: similar }
 
 cautions:
   - If lying flat on your back is uncomfortable, or you are pregnant, rest on your side with support instead.

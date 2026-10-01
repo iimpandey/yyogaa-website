@@ -57,6 +57,7 @@ relatedPoses:
   - { pose: cat-cow, relation: preparation }
   - { pose: childs-pose, relation: counter }
   - { pose: bridge-pose, relation: similar }
+  - { pose: sphinx-pose, relation: preparation }
 
 cautions:
   - If your neck feels strained, keep your gaze down towards the mat.

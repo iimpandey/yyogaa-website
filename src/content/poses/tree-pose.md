@@ -57,6 +57,7 @@ variations: []
 relatedPoses:
   - { pose: mountain-pose, relation: preparation }
   - { pose: warrior-ii, relation: similar }
+  - { pose: warrior-iii, relation: progression }
 
 cautions:
   - Never press your foot against the side of your standing knee.
