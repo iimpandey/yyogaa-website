@@ -57,6 +57,7 @@ relatedPoses:
   - { pose: cat-cow, relation: preparation }
   - { pose: downward-facing-dog, relation: similar }
   - { pose: bridge-pose, relation: counter }
+  - { pose: head-to-knee-pose, relation: similar }
 
 cautions:
   - Ease off if you feel a sharp or pulling sensation behind your knees.

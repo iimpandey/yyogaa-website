@@ -57,6 +57,7 @@ variations: []
 relatedPoses:
   - { pose: tree-pose, relation: progression }
   - { pose: warrior-ii, relation: progression }
+  - { pose: chair-pose, relation: progression }
 
 cautions:
   - If you feel light-headed or unsteady, sit down and breathe normally.

@@ -60,6 +60,8 @@ variations: []
 relatedPoses:
   - { pose: mountain-pose, relation: preparation }
   - { pose: tree-pose, relation: similar }
+  - { pose: warrior-i, relation: similar }
+  - { pose: triangle-pose, relation: similar }
 
 cautions:
   - If your front knee aches, bend it less or shorten your stance.
