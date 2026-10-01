@@ -40,7 +40,7 @@ const filterCategories = groups.map(({ category }) => category);
 const toSearchText = (text) =>
   text
     .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
+    .replace(/[\u0300-\u036f]/g, '')
     .replace(/['’]/g, '')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
@@ -168,13 +168,34 @@ const poseCategories = (pose) => [pose.data.category.id, ...pose.data.alsoIn.map
     const toSearchText = (text) =>
       text
         .normalize('NFD')
-        .replace(/[̀-ͯ]/g, '')
+        .replace(/[\u0300-\u036f]/g, '')
         .replace(/['’]/g, '')
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, ' ')
         .trim();
 
+    const total = items.length;
     let category = '';
+    let urlTimer;
+
+    // Keep the choice in the address so it can be shared or reloaded. Only replaces the
+    // current history entry (Back still leaves the page), and only when the address really
+    // changes: browsers limit how often replaceState may be called.
+    const writeUrl = () => {
+      clearTimeout(urlTimer);
+      const params = new URLSearchParams(location.search);
+      const q = input.value.trim();
+      q ? params.set('q', q) : params.delete('q');
+      category ? params.set('category', category) : params.delete('category');
+      const query = params.toString();
+      const next = `${location.pathname}${query ? `?${query}` : ''}${location.hash}`;
+      if (next === `${location.pathname}${location.search}${location.hash}`) return;
+      try {
+        history.replaceState(history.state, '', next);
+      } catch {
+        // Too many updates in a short time (Safari): the address is simply not updated.
+      }
+    };
 
     const setCategory = (id) => {
       category = knownCategories.includes(id) ? id : '';
@@ -202,16 +223,17 @@ const poseCategories = (pose) => [pose.data.category.id, ...pose.data.alsoIn.map
         group.hidden = !group.querySelector('[data-pose-item]:not([hidden])');
       }
 
-      countEl.textContent = `${shown} ${shown === 1 ? 'pose' : 'poses'}`;
+      // "10 poses" when nothing is filtered, otherwise "3 of 10 poses". Only written when the
+      // text changes, so screen readers are not told the same count again.
+      const countText =
+        words.length === 0 && !category
+          ? `${shown} ${shown === 1 ? 'pose' : 'poses'}`
+          : `${shown} of ${total} ${total === 1 ? 'pose' : 'poses'}`;
+      if (countEl.textContent !== countText) countEl.textContent = countText;
       emptyEl.hidden = shown > 0;
 
-      // Keep the choice in the address so it can be shared or reloaded.
-      const params = new URLSearchParams(location.search);
-      const q = input.value.trim();
-      q ? params.set('q', q) : params.delete('q');
-      category ? params.set('category', category) : params.delete('category');
-      const query = params.toString();
-      history.replaceState(null, '', `${location.pathname}${query ? `?${query}` : ''}${location.hash}`);
+      clearTimeout(urlTimer);
+      urlTimer = setTimeout(writeUrl, 250);
     };
 
     // Start from the address, e.g. /yoga/poses?category=backbend&q=cobra. Unknown values are ignored.
@@ -220,6 +242,21 @@ const poseCategories = (pose) => [pose.data.category.id, ...pose.data.alsoIn.map
     setCategory(params.get('category') ?? '');
 
     input.addEventListener('input', update);
+    // Escape clears the search box. Most browsers already do this for type="search" but
+    // Firefox does not, so it is done here for everyone.
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && input.value !== '') {
+        event.preventDefault();
+        input.value = '';
+        update();
+      }
+    });
+    // Save a pending address change before leaving, e.g. when a pose card is opened right
+    // after typing, so Back or reload returns to the same filtered view.
+    document.addEventListener('click', (event) => {
+      if (event.target.closest?.('a[href]')) writeUrl();
+    });
+    window.addEventListener('pagehide', writeUrl);
     form.addEventListener('submit', (event) => event.preventDefault());
 
     for (const chip of chips) {

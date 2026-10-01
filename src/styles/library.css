@@ -13,6 +13,7 @@
   --pl-sand-text: #4a463e; /* labels on the sand band */
   --pl-soft-panel: #efe9dc;
   --pl-panel: #faf7f0;
+  --pl-field-border: #8c8576; /* about 3.2:1 on cream, WCAG 1.4.11 (form field edges) */
 }
 
 /* ---------- Dark hero (text only, like the journal hero) ---------- */
@@ -385,7 +386,7 @@
   max-width: 440px;
   min-height: 48px;
   padding: 0 20px;
-  border: 1px solid var(--line);
+  border: 1px solid var(--pl-field-border);
   border-radius: 40px;
   background: var(--pl-panel);
   color: var(--charcoal);
